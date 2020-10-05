@@ -35,7 +35,7 @@ variable "instance_ssh_keys" {
 
 variable "eco_image" {
   description = "Container image of ECO to use"
-  default     = "quay.io/quentin_m/etcd-cloud-operator:v3.4.13"
+  default     = "quay.global.bitmex/mhuang/etcd-cloud-operator:v3.4.14"
 }
 
 variable "eco_enable_tls" {
