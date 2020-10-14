@@ -29,23 +29,20 @@ data "ignition_config" "main" {
     data.ignition_systemd_unit.eco.rendered,
     data.ignition_systemd_unit.eco-health.rendered,
     data.ignition_systemd_unit.node-exporter.rendered,
+    data.ignition_systemd_unit.selinux-disable-service.rendered,
   ]
 
   users = [data.ignition_user.core.rendered]
-
-  append {
-    source = lookup(
-      var.ignition_extra_config,
-      "source",
-      local.blank_ignition_config,
-    )
-    verification = lookup(var.ignition_extra_config, "verification", "")
-  }
 }
 
 data "ignition_user" "core" {
   name                = "core"
   ssh_authorized_keys = var.instance_ssh_keys
+}
+
+data "ignition_systemd_unit" "selinux-disable-service" {
+  name    = "selinux-disable.service"
+  content = file("${path.module}/resources/selinux-disable.service")
 }
 
 data "ignition_systemd_unit" "docker" {
@@ -91,7 +88,6 @@ data "ignition_systemd_unit" "node-exporter" {
 }
 
 data "ignition_file" "eco-config" {
-  filesystem = "root"
   path       = "/etc/eco/config.yaml"
   mode       = 420
 
@@ -101,7 +97,6 @@ data "ignition_file" "eco-config" {
 }
 
 data "ignition_file" "eco-ca" {
-  filesystem = "root"
   path       = "/etc/eco/ca.crt"
   mode       = 420
 
@@ -111,7 +106,6 @@ data "ignition_file" "eco-ca" {
 }
 
 data "ignition_file" "eco-crt" {
-  filesystem = "root"
   path       = "/etc/eco/eco.crt"
   mode       = 420
 
@@ -121,7 +115,6 @@ data "ignition_file" "eco-crt" {
 }
 
 data "ignition_file" "eco-key" {
-  filesystem = "root"
   path       = "/etc/eco/eco.key"
   mode       = 420
 
@@ -131,7 +124,6 @@ data "ignition_file" "eco-key" {
 }
 
 data "ignition_file" "e" {
-  filesystem = "root"
   path       = "/opt/bin/e"
   mode       = 493
 
@@ -141,7 +133,6 @@ data "ignition_file" "e" {
 }
 
 data "ignition_file" "eco-health" {
-  filesystem = "root"
   path       = "/opt/bin/eco-health.sh"
   mode       = 493
 

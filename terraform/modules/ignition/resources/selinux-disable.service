@@ -1,0 +1,11 @@
+[Unit]
+Description=Disable SELinux
+Before=docker.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/bin/bash -c 'if [[ "$(/usr/sbin/getenforce)" != "Disabled" ]]; then /usr/sbin/setenforce 0; fi'
+
+[Install]
+WantedBy=multi-user.target
