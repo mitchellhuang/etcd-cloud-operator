@@ -5,7 +5,7 @@ Before=docker.service
 [Service]
 Type=oneshot
 RemainAfterExit=yes
-ExecStart=/usr/bin/bash -c 'if [[ "$(/usr/sbin/getenforce)" != "Disabled" ]]; then /usr/sbin/setenforce 0; fi'
+ExecStart=/usr/bin/bash -c 'if [[ "$(/sbin/getenforce)" != "Disabled" ]]; then /sbin/setenforce 0; fi'
 
 [Install]
 WantedBy=multi-user.target
