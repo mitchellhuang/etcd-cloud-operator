@@ -32,6 +32,10 @@ data "ignition_config" "main" {
     data.ignition_systemd_unit.selinux-disable-service.rendered,
   ]
 
+  directories = [
+    data.ignition_directory.var-lib-eco.rendered,
+  ]
+
   users = [data.ignition_user.core.rendered]
 }
 
@@ -75,6 +79,10 @@ data "template_file" "eco-service" {
 data "ignition_systemd_unit" "eco" {
   name    = "eco.service"
   content = data.template_file.eco-service.rendered
+}
+
+data "ignition_directory" "var-lib-eco" {
+  path = "/var/lib/eco"
 }
 
 data "ignition_systemd_unit" "eco-health" {
