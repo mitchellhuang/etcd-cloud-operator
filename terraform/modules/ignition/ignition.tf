@@ -18,7 +18,6 @@ data "ignition_config" "main" {
     data.ignition_file.eco-ca.rendered,
     data.ignition_file.eco-crt.rendered,
     data.ignition_file.eco-key.rendered,
-    data.ignition_file.eco-health.rendered,
     data.ignition_file.e.rendered,
   ]
 
@@ -27,7 +26,6 @@ data "ignition_config" "main" {
     data.ignition_systemd_unit.locksmithd.rendered,
     data.ignition_systemd_unit.update-engine.rendered,
     data.ignition_systemd_unit.eco.rendered,
-    data.ignition_systemd_unit.eco-health.rendered,
     data.ignition_systemd_unit.node-exporter.rendered,
     data.ignition_systemd_unit.selinux-disable-service.rendered,
   ]
@@ -85,11 +83,6 @@ data "ignition_directory" "var-lib-eco" {
   path = "/var/lib/eco"
 }
 
-data "ignition_systemd_unit" "eco-health" {
-  name    = "eco-health.service"
-  content = file("${path.module}/resources/eco-health.service")
-}
-
 data "ignition_systemd_unit" "node-exporter" {
   name    = "node-exporter.service"
   content = file("${path.module}/resources/node-exporter.service")
@@ -137,15 +130,6 @@ data "ignition_file" "e" {
 
   content {
     content = file("${path.module}/resources/e")
-  }
-}
-
-data "ignition_file" "eco-health" {
-  path       = "/opt/bin/eco-health.sh"
-  mode       = 493
-
-  content {
-    content = file("${path.module}/resources/eco-health.sh")
   }
 }
 
